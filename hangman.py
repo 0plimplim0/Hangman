@@ -2,9 +2,8 @@ import random
 import os 
 import time
 
-def choose_word():
-    wlist = ["perro", "gato", "pez", "loro"]
-    return random.choice(wlist)
+def choose_word(list1):
+    return random.choice(list1)
 
 def clear_console():
     os.system("clear")
@@ -64,7 +63,19 @@ def display_hangman(tries):
     print(stages[tries])
 
 def hangman():
-    word = list(choose_word())
+    usr_list = ""
+    
+    while usr_list == "":
+        selected_list = input("Which category do you want to play with? ")
+        if selected_list == "animals":
+            usr_list = lists[2]
+        elif selected_list == "fruits":
+            usr_list = lists[1]
+        elif selected_list == "colors":
+            usr_list = lists[0]
+        else: print("Please enter a valid category.")
+        
+    word = list(choose_word(usr_list))
     word2 = "_" * len(word)
     guessed = False
     guessed_letters = []
@@ -104,12 +115,17 @@ def hangman():
         time.sleep(1)
         clear_console()
 
+        word = "".join(word)
     if guessed:
         print(f"Congratulations! You guessed the word: {word}")
     else:
         display_hangman(tries)
         print(f"Sorry, you lost. The word was: {word}")
 
+lists = [["rojo", "azul", "verde", "amarillo", "naranja", "rosa", "morado"], 
+["manzana", "platano", "naranja", "uva", "fresa", "pera", "pina"], 
+["perro", "gato", "pez", "tigre", "leon", "tiburon", "loro", "elefante", "jirafa", "zorro", "oso", "conejo", "serpiente", "aguila", "delfin", "camaleon", "canguro", "rinoceronte", "buho"
+] ]
 
 while True:
     clear_console()
@@ -118,7 +134,11 @@ while True:
     usr_input = input("Type 'play' or 'exit': ")
 
     if usr_input == "play":
-        hangman()
+        while True:
+            hangman()
+            x = input("Do you want to play again?(Y or N) ").upper()
+            if x == "N":
+                break
     elif usr_input == "exit":
         print("Goodbye!")
         break
